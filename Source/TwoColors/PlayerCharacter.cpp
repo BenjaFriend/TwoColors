@@ -157,10 +157,8 @@ bool APlayerCharacter::IsDead() const
 
 void APlayerCharacter::Die()
 {
+	// TODO: Any logic that we want to be in C++
 
-
-	// Tell the game mode that we have died
-	UE_LOG(LogTemp, Error, TEXT("Player Die!"));
-
-
+	// And blueprint logic, for things like audio and VFX
+	DeathEvent();
 }

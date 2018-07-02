@@ -30,7 +30,12 @@ public:
 	void UpdateHealth(float Value);
 
 	/** Returns true if players health is above 0 */
+	UFUNCTION(BlueprintCallable)
 	bool IsDead() const;
+
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Health", meta = (DisplayName = "Player Death ~ The Player has died"))
+	void DeathEvent();
 
 	/** Return the health of the player**/
 	UFUNCTION(BlueprintCallable)
