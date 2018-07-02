@@ -46,13 +46,13 @@ void AEnemySpawner::SetSpawningActive(bool bShouldSpawn)
 {
 	if (bShouldSpawn)
 	{
-		// Set the timer on spawn pickup
+		// Set the timer to spawn an enemy
 		SpawnDelay = FMath::FRandRange(SpawnDelayRangeLow, SpawnDelayRangeHigh);
 		GetWorldTimerManager().SetTimer(SpawnTimer, this, &AEnemySpawner::SpawnEnemy, SpawnDelay, true);
 	}
 	else
 	{
-		// Clear the timer on spawn pcikup
+		// Clear the timer
 		GetWorldTimerManager().ClearTimer(SpawnTimer);
 	}
 }
@@ -84,4 +84,11 @@ void AEnemySpawner::SpawnEnemy()
 				World->SpawnActor<AEnemy>(WhatToSpawn, SpawnLocation, SpawnRotation, SpawnParams);
 		}
 	}
+
+	// Clear the timer for spawning
+	GetWorldTimerManager().ClearTimer(SpawnTimer);
+
+	// Reset the spawn delay
+	SpawnDelay = FMath::FRandRange(SpawnDelayRangeLow, SpawnDelayRangeHigh);
+	GetWorldTimerManager().SetTimer(SpawnTimer, this, &AEnemySpawner::SpawnEnemy, SpawnDelay, true);
 }

@@ -20,6 +20,10 @@ APlayerCharacter::APlayerCharacter()
 	Muzzle = CreateDefaultSubobject<USceneComponent>(TEXT("Muzzle"));
 	Muzzle->SetupAttachment(RootComponent);
 
+
+	StartHealth = 100.f;
+	Health = StartHealth;
+
 }
 
 // Called when the game starts or when spawned
@@ -34,8 +38,6 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	StartHealth = 100.f;
-	Health = StartHealth;
 }
 
 //////////////////////////////////////////////////////////////////////////
