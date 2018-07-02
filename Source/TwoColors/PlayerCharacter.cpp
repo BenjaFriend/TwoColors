@@ -5,6 +5,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Runtime/Engine/Classes/GameFramework/Actor.h"
 #include "GameFramework/Controller.h"
+#include "Runtime/Engine/Classes/Engine/World.h"
+#include "Projectile.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -13,6 +15,10 @@ APlayerCharacter::APlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	BaseTurnRate = 45.f;
+
+	// Create the projectile mesh
+	Muzzle = CreateDefaultSubobject<USceneComponent>(TEXT("Muzzle"));
+	Muzzle->SetupAttachment(RootComponent);
 
 }
 
@@ -86,6 +92,8 @@ void APlayerCharacter::ShootRight()
 {
 	// Shoot right
 	UE_LOG(LogTemp, Warning, TEXT("Shoot right!"));
+	// Spawn the right projectile here
+	FireProjectile(true);
 
 }
 
@@ -94,4 +102,30 @@ void APlayerCharacter::ShootLeft()
 	// Shoot left
 	UE_LOG(LogTemp, Warning, TEXT("Shoot left!"));
 
+	// Spawn the left projectile here
+	FireProjectile(false);
+}
+
+void APlayerCharacter::FireProjectile(bool IsRight)
+{
+	// Fire projectile
+	UWorld* const World = GetWorld();
+	if (World && RightProjectileClass && LeftProjectileClass)
+	{
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		SpawnParams.Instigator = Instigator;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+
+		const FRotator SpawnRotation = GetControlRotation();
+
+		const FVector SpawnLocation =
+			((Muzzle != nullptr) ? Muzzle->GetComponentLocation() : GetActorLocation());// +SpawnRotation.RotateVector(FVector(100.0f, 0.0f, 10.0f));
+
+		AActor* Projectile = World->SpawnActor<AActor>(
+			( IsRight  ? RightProjectileClass : LeftProjectileClass ),
+			SpawnLocation,
+			SpawnRotation,
+			SpawnParams);
+	}
 }

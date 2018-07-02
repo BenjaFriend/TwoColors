@@ -70,6 +70,7 @@ void AEnemySpawner::SpawnEnemy()
 			FActorSpawnParameters SpawnParams;
 			SpawnParams.Owner = this;
 			SpawnParams.Instigator = Instigator;
+			SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 			// Get a random location to spawn at
 			FVector SpawnLocation = GetRandomPointInVolume();

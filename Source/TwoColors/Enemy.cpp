@@ -10,20 +10,23 @@ AEnemy::AEnemy()
 
 	EnemyType = EEnemyType::ENone;
 
-
+	Health = 100.f;
 }
 
-// Called when the game starts or when spawned
-void AEnemy::BeginPlay()
+
+void AEnemy::UpdateDamage(float Damage)
 {
-	Super::BeginPlay();
-	
+	Health += Damage;
+
+	if (Health <= 0.f)
+	{
+		Die();
+	}
 }
 
-// Called to bind functionality to input
-void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AEnemy::Die()
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	// Just destory myself for now
+	Destroy();
 }
-

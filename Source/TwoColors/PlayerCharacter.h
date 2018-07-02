@@ -53,4 +53,22 @@ private:
 	/** Handle shooting of the input bound to the left trigger */
 	void ShootLeft();
 
+	/** 
+	* Fires a projectile 
+	* @param IsRight  If true fire hte right projectile, else, fire the left
+	*/
+	void FireProjectile(bool IsRight);
+
+	/** The projectile that the right side shoots */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon", Meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<class AProjectile> RightProjectileClass;
+
+	/** The projectile that this rifle shoots */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon", Meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<class AProjectile> LeftProjectileClass;
+
+	/** The muzzle where the projectiles will come out of */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon", Meta = (AllowPrivateAccess = "true"))
+	class USceneComponent* Muzzle;
+
 };

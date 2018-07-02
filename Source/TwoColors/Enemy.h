@@ -19,21 +19,30 @@ public:
 	// Sets default values for this character's properties
 	AEnemy();
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	/** Update the damage done to this enemy  */
+	UFUNCTION(BlueprintCallable)
+	void UpdateDamage(float Damage);
 
 	/** Return the mesh for the pickup **/
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE EEnemyType GetEnemyType() const { return EnemyType; }
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
+	/** Return the mesh for the pickup **/
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE float GetHealth() const { return Health; }
 
 private:
 
+	/** Handle the death of this enemy */
+	UFUNCTION(BlueprintCallable)
+	void Die();
 	
+	/** The enym type of this object */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy", meta = (AllowPrivateAccess = "true"))
 	EEnemyType EnemyType;
+
+	/** The current health of this enemy */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy", meta = (AllowPrivateAccess = "true"))
+	float Health;
 
 };
