@@ -22,7 +22,7 @@ AEnemySpawner::AEnemySpawner()
 	// Set the spawn delay range
 	SpawnDelayRangeLow = 1.0f;
 	SpawnDelayRangeHigh = 4.5f;
-
+	DifficultyScalar = 1.1f;
 }
 
 // Called when the game starts or when spawned
@@ -88,7 +88,13 @@ void AEnemySpawner::SpawnEnemy()
 	// Clear the timer for spawning
 	GetWorldTimerManager().ClearTimer(SpawnTimer);
 
-	// Reset the spawn delay
-	SpawnDelay = FMath::FRandRange(SpawnDelayRangeLow, SpawnDelayRangeHigh);
+	// Calculate some new spawn delays so that the game gets harder over time
+	SpawnDelayRangeLow = SpawnDelayRangeLow / DifficultyScalar;
+	SpawnDelayRangeHigh = SpawnDelayRangeHigh / DifficultyScalar;
+
+	// I want this delay to decrease over time, that the game gets harder
+	SpawnDelay =  FMath::FRandRange(SpawnDelayRangeLow, SpawnDelayRangeHigh);
+
+	// Actually set the timer
 	GetWorldTimerManager().SetTimer(SpawnTimer, this, &AEnemySpawner::SpawnEnemy, SpawnDelay, true);
 }

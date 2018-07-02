@@ -33,7 +33,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool IsDead() const;
 
-
+	/** Blueprint event to handle VFX and sounds */
 	UFUNCTION(BlueprintImplementableEvent, Category = "Health", meta = (DisplayName = "Player Death ~ The Player has died"))
 	void DeathEvent();
 

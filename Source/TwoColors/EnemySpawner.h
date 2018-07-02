@@ -37,16 +37,20 @@ protected:
 	/** The timer handling the spawning of objects */
 	FTimerHandle SpawnTimer;
 
-	/* Minimum Spawn delay */
+	/* Minimum Spawn delay. Will be divided by the DifficultyScalar every time we spawnma new item */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
 	float SpawnDelayRangeLow;
 
-	/* Maximum spawn delay */
+	/* Maximum spawn delay. Will be divided by the DifficultyScalar every time we spawnma new item  */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
 	float SpawnDelayRangeHigh;
 
 
 private:
+
+	/** Scalar for difficulty over time. Spawn ranges are divided by this every time we spawn something  */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning", meta = (AllowPrivateAccess = "true"))
+	float DifficultyScalar;
 
 	/** Box Component to specify where pickups should be spawned */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Spawning", meta = (AllowPrivateAccess = "true"))
