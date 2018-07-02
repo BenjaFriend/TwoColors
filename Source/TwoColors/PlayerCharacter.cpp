@@ -34,7 +34,12 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	StartHealth = 100.f;
+	Health = StartHealth;
 }
+
+//////////////////////////////////////////////////////////////////////////
+// Input
 
 // Called to bind functionality to input
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -90,8 +95,6 @@ void APlayerCharacter::TurnAtRate(float Rate)
 
 void APlayerCharacter::ShootRight()
 {
-	// Shoot right
-	UE_LOG(LogTemp, Warning, TEXT("Shoot right!"));
 	// Spawn the right projectile here
 	FireProjectile(true);
 
@@ -99,12 +102,12 @@ void APlayerCharacter::ShootRight()
 
 void APlayerCharacter::ShootLeft()
 {
-	// Shoot left
-	UE_LOG(LogTemp, Warning, TEXT("Shoot left!"));
-
 	// Spawn the left projectile here
 	FireProjectile(false);
 }
+
+////////////////////////////////////////////////////////////////////////////
+// Gameplay
 
 void APlayerCharacter::FireProjectile(bool IsRight)
 {
@@ -112,20 +115,50 @@ void APlayerCharacter::FireProjectile(bool IsRight)
 	UWorld* const World = GetWorld();
 	if (World && RightProjectileClass && LeftProjectileClass)
 	{
+		// Set the paramaters so that we know who the owner of this projectile is
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.Owner = this;
 		SpawnParams.Instigator = Instigator;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-
+		
+		// Use the current rotation o fhte player
 		const FRotator SpawnRotation = GetControlRotation();
 
+		// Use the muzzle location or the players current location if hta tis null
 		const FVector SpawnLocation =
-			((Muzzle != nullptr) ? Muzzle->GetComponentLocation() : GetActorLocation());// +SpawnRotation.RotateVector(FVector(100.0f, 0.0f, 10.0f));
+			((Muzzle != nullptr) ? Muzzle->GetComponentLocation() : GetActorLocation());
 
-		AActor* Projectile = World->SpawnActor<AActor>(
+		// Spawn the actor
+		AProjectile* Projectile = World->SpawnActor<AProjectile>(
 			( IsRight  ? RightProjectileClass : LeftProjectileClass ),
 			SpawnLocation,
 			SpawnRotation,
 			SpawnParams);
 	}
+}
+
+void APlayerCharacter::UpdateHealth(float Value)
+{
+	Health += Value;
+
+	// Check if we are dead
+	if (Health <= 0.f)
+	{
+		Die();
+	}
+}
+
+bool APlayerCharacter::IsDead() const
+{
+	return Health > 0.f;
+}
+
+void APlayerCharacter::Die()
+{
+
+
+	// Tell the game mode that we have died
+	UE_LOG(LogTemp, Error, TEXT("Player Die!"));
+
+
 }
